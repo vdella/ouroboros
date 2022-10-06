@@ -1,16 +1,34 @@
 def linear_congruent_generator(modulus: int,
                                multiplier: int,
                                increment: int,
-                               seed: int) -> int:
+                               seed: int,
+                               times: int = 1) -> int:
+    result = list()
 
-    return (multiplier * seed + increment) % modulus
+    for _ in range(times):
+        result.append((multiplier * seed + increment) % modulus)
+
+    return __to_int_from(result)
 
 
-def lagged_fibonacci_generator(modulus: int,
-                               first_dec: int,
-                               second_dec: int,
-                               seed: int) -> int:
+def blum_blum_shub_round1(seed, p, q):
+    result = seed
 
-    individuals = list(str(seed))
-    seeds = [(individuals[first_dec - 1] * individuals[second_dec - 1]) % modulus for _ in range(len(individuals))]
-    return int(''.join(seeds))
+    for _ in range(10):  # Hardwired to 10.
+        result = result**2 % (p*q)
+
+    return result
+
+
+def full_bbs(seed, times, p, q):
+    result = [0 for _ in range(times)]
+
+    for i in range(times):
+        result[i] = blum_blum_shub_round1(seed, p, q)
+
+    return __to_int_from(result)
+
+
+def __to_int_from(values: list):
+    middle = [str(value) for value in values]
+    return int(''.join(middle))
