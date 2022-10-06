@@ -1,42 +1,30 @@
-from rng import linear_congruent_generator
 from math import log2
 
 
-def is_composite_for(*args) -> bool:
+def is_composite_for(entry, random_num) -> bool:
     """Uses Miller-Rabin algorithm to check for possible primality."""
 
-    number = args[0]
-    rng = args[1]
-    foo, bar, seed = args[2:]
+    odd_part, even_part = repart(entry - 1)  # Assuming 'number - 1' to be an even number.
+    base = random_num
+    probably_prime = (base**odd_part) % entry
 
-    odd_part, even_part = repart(number - 1)  # Assuming 'number - 1' to be an even number.
-
-    base = rng(number, foo, bar, seed)
-
-    probably_prime = (base**odd_part) % number
-
-    if probably_prime % number == 1 % number:
+    if probably_prime % entry == 1 % entry:
         return False
 
-    for _ in range(int(even_part)):
-        if probably_prime % number == -1 % number:
+    for _ in range(even_part):
+        if probably_prime % entry == -1 % entry:
             return False
-        probably_prime = probably_prime**2 % number
+        probably_prime = probably_prime ** 2 % entry
 
     return True
 
 
-def is_prime(*args) -> bool:
+def is_prime(entry, random_num) -> bool:
     """Uses Fermat's primality test to check if a number is prime or composite."""
-
-    number = args[0]
-    rng = args[1]
-    foo, bar, seed = args[2:]
-
     for _ in range(8):
-        base = rng(number, foo, bar, seed)
+        base = random_num
 
-        if (base**(number - 1)) % number != 1 % number:
+        if (base**(entry - 1)) % entry != 1 % entry:
             return False
 
     return True
@@ -53,8 +41,3 @@ def repart(even_number) -> tuple:
     even_part = log2(even_number / odd_part)  # Gets even part k by solving 2^k * m.
 
     return odd_part, int(even_part)
-
-
-if __name__ == '__main__':
-    print(is_composite_for(261, linear_congruent_generator, 3, 4, 5))
-    print(is_prime(261, linear_congruent_generator, 3, 4, 5))
