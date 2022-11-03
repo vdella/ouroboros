@@ -11,10 +11,10 @@ def linear_congruent_generator(modulus: int,
     return __to_int_from(result)
 
 
-def blum_blum_shub_round1(seed, p, q):
+def blum_blum_shub_round1(seed, p, q, times=10):
     result = seed
 
-    for _ in range(10):  # Hardwired to 10.
+    for _ in range(times):
         result = result**2 % (p*q)
 
     return result

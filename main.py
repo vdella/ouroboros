@@ -10,6 +10,10 @@ table = list()
 
 
 def rng_at(bit_size: int):
+    """Tests each RNG created using a size
+    from size_in_bits. Generations are easily
+    timed by getting the difference from end and start time."""
+
     start = time()
     result = linear_congruent_generator(2, 3, 4, 5, bit_size)
     end = time() - start
