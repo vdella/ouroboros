@@ -24,4 +24,7 @@ install-tabulate:
 run:
 	@echo -e "${CCGREEN}Running main...${CCEND}"
 	@echo -e "${CCGREEN}And it will probably take a while.${CCEND}"
-	@python3.10 main.py
+	@echo -e "${CCGREEN}  > Note: treat False at Fermat as True at Miller-Rabin,${CCEND}"
+	@echo -e "${CCGREEN}  > as the first tests primality and the latter tests if a number is composite.${CCEND}"
+
+	@python3.10 main.py > output.txt
